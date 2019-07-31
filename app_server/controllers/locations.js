@@ -71,8 +71,11 @@ const locationInfo = function (req, res) {
     });
 };
 /* GET 'Add review' page */
-const addReview = (req, res) => {
-    res.render('location-review-form', { title: 'Add review' });
+const addReview = function (req, res) {
+    res.render('location-review-form', {
+        title: 'Review Starcups on Loc8r',
+        pageHeader: { title: 'Review Starcups' }
+    });
 };
 module.exports = {
     homelist,
