@@ -36,5 +36,4 @@ heroku open
 
 TODO:
 - get google maps static api key
-
-on ch 5
+- add data to production db
