@@ -24,8 +24,10 @@ heroku local
 This runs it on `localhost:5000`
 
 Deploying changes to live heroku in web
-```
+``` bash
 git push heroku master
+# or
+git push -f heroku HEAD:master
 ```
 
 To open url for app
