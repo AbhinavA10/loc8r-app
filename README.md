@@ -24,8 +24,10 @@ heroku local
 This runs it on `localhost:5000`
 
 Deploying changes to live heroku in web
-```
+``` bash
 git push heroku master
+# or
+git push -f heroku HEAD:master # to push a local branch to another master
 ```
 
 To open url for app
@@ -36,5 +38,4 @@ heroku open
 
 TODO:
 - get google maps static api key
-
-on ch 5
+- add data to production db
