@@ -27,7 +27,7 @@ Deploying changes to live heroku in web
 ``` bash
 git push heroku master
 # or
-git push -f heroku HEAD:master
+git push -f heroku HEAD:master # to push a local branch to another master
 ```
 
 To open url for app

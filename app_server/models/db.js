@@ -49,5 +49,3 @@ mongoose.connection.on('disconnected', () => {
 
 mongoose.connect(dbURI, { useNewUrlParser: true });
 require('./locations');
-
-// TODO: need to handle closing the mongoose connection
