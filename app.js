@@ -4,10 +4,10 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 // best practice: connect to mongoose as soon as app loads
-require('./app_server/models/db'); // connect to mongo and mongoose and load models
+require('./app_api/models/db'); // connect to mongo and mongoose and load models
 
 const indexRouter = require('./app_server/routes/index');
-const usersRouter = require('./app_server/routes/users');
+const apiRoutes = require('./app_api/routes/index');
 
 var app = express();
 
@@ -25,7 +25,7 @@ app.use(cookieParser()); // takes incoming request and puts cookie info in req i
 app.use(express.static(path.join(__dirname, 'public'))); // find static files, such as css
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api', apiRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

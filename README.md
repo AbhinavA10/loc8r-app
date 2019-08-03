@@ -12,10 +12,28 @@ Uses Font-awesome and Bootstrap
 - Backend Express Server API
 - built with MVC architecture
 
+### app_api
+- REST API for MongoDB
+- used to interface static Express website with Mongo
+- decoupled into a seperate folder in case we need to move it to another server
+- to test the api, use Postman
+
 ## Env variables needed
+
+For Development mode:
 - 
 
+In production mode:
+- MONGODB_URI
+- NODE_ENV
 
+## REST API
+- stateless api
+- used to interface controller code with mongo
+- APIs should always return HTTP status codes
+- returning json data is most friendly
+- CRUD
+- GET, POST, PUT, DELETE
 
 Testing heroku env locally:
 ```
@@ -38,4 +56,3 @@ heroku open
 
 TODO:
 - get google maps static api key
-- add data to production db
