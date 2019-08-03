@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+// best practice: connect to mongoose as soon as app loads
+require('./app_server/models/db'); // connect to mongo and mongoose and load models
 
 const indexRouter = require('./app_server/routes/index');
 const usersRouter = require('./app_server/routes/users');
@@ -14,7 +16,9 @@ app.set('views', path.join(__dirname, 'app_server', 'views'));
 app.set('view engine', 'pug');
 
 //middleware
-app.use(logger('dev'));
+if (!(process.env.NODE_ENV === 'production')) {
+  app.use(logger('dev'));
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser()); // takes incoming request and puts cookie info in req instead
