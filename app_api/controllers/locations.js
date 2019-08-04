@@ -190,11 +190,37 @@ function locationsUpdateOne(req, res) {
         );
 };
 
+/**
+ * DELETE request handler - deletes a location
+ * @param {*} req 
+ * @param {*} res 
+ */
 function locationsDeleteOne(req, res) {
-    res
-        .status(200)
-        .json({ "status": "success" });
-};
+    const { locationid } = req.params; // req.params.locationid
+    if (locationid) {
+        //TODO convert all mongoose callbacks into thenables or awaits instead of callbacks
+        Loc
+            .findByIdAndRemove(locationid)
+            .exec((err, location) => {
+                if (err) {
+                    //mongo error
+                    return res
+                        .status(404)
+                        .json(err);
+                }
+                res
+                    .status(204) //204 is a 'no content'
+                    .json(null);
+            }
+            );
+    } else {
+        res
+            .status(404)
+            .json({
+                "message": "No Location"
+            });
+    }
+}
 
 module.exports = {
     locationsListByDistance,

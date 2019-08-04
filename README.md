@@ -13,7 +13,7 @@ Uses Font-awesome and Bootstrap
 - built with MVC architecture
 
 ### app_api
-- REST API for MongoDB
+- REST API for CRUD operations on MongoDB
 - used as a backend for Angular Frontend, to interface with mongo
 - decoupled into a seperate folder in case we need to move it to another server
 - to test the api, use Postman
