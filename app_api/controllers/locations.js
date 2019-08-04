@@ -126,10 +126,68 @@ function locationsReadOne(req, res) {
         });
 }
 
+/**
+ * PUT request handler - updating a location
+ * @param {*} req 
+ * @param {*} res 
+ */
 function locationsUpdateOne(req, res) {
-    res
-        .status(200)
-        .json({ "status": "success" });
+    //Steps: 1 find document, 2 update it, 3 save it, 4 return updated document
+    if (!req.params.locationid) {
+        return res
+            .status(404)
+            .json({
+                "message": "Not found, locationid is required"
+            });
+    }
+    Loc
+        .findById(req.params.locationid)
+        .select('-reviews -rating') // don't retreive the reviews and rating fields
+        .exec((err, location) => {
+            if (!location) {
+                return res
+                    .json(404)
+                    .status({
+                        "message": "locationid not found"
+                    });
+            } else if (err) {
+                return res
+                    .status(400)
+                    .json(err);
+            }
+            // update location document with received data
+            location.name = req.body.name;
+            location.address = req.body.address;
+            location.facilities = req.body.facilities.split(',');
+            location.coords = [
+                parseFloat(req.body.lng),
+                parseFloat(req.body.lat)
+            ];
+            location.openingTimes = [{
+                days: req.body.days1,
+                opening: req.body.opening1,
+                closing: req.body.closing1,
+                closed: req.body.closed1,
+            }, {
+                days: req.body.days2,
+                opening: req.body.opening2,
+                closing: req.body.closing2,
+                closed: req.body.closed2,
+            }];
+            // save updated document
+            location.save((err, location) => {
+                if (err) {
+                    res
+                        .status(404)
+                        .json(err);
+                } else {
+                    Res
+                        .status(200)
+                        .json(location); // return updated document as a confirmation
+                }
+            });
+        }
+        );
 };
 
 function locationsDeleteOne(req, res) {

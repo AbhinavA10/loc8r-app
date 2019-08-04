@@ -52,6 +52,8 @@ function doAddReview(req, res, location) {
             rating,
             reviewText
         });
+        // if we make changes to the instance returned by a mongoose query, and then save it
+        // Mongoose will update the original document in the database
         location.save((err, location) => { // use mongoose's save() method
             if (err) {
                 res
@@ -163,9 +165,64 @@ function reviewsReadOne(req, res) {
 };
 
 function reviewsUpdateOne(req, res) {
-    res
-        .status(200)
-        .json({ "status": "success" });
+    // 1 Find parent document, 2 find subdoc, 3 update it, 4 save parent doc, 5 send review doc as confirmation
+    if (!req.params.locationid || !req.params.reviewid) {
+        return res
+            .status(404)
+            .json({
+                "message": "Not found, locationid and reviewid are both required"
+            });
+    }
+    Loc
+        .findById(req.params.locationid) // find parent document
+        .select('reviews')
+        .exec((err, location) => {
+            if (!location) {
+                return res
+                    .status(404)
+                    .json({
+                        "message": "Location not found"
+                    });
+            } else if (err) {
+                return res
+                    .status(400)
+                    .json(err);
+            }
+            if (location.reviews && location.reviews.length > 0) {
+                const thisReview = location.reviews.id(req.params.reviewid); // get subdoc
+                if (!thisReview) {
+                    res
+                        .status(404)
+                        .json({
+                            "message": "Review not found"
+                        });
+                } else {
+                    // make changes to the review
+                    thisReview.author = req.body.author;
+                    thisReview.rating = req.body.rating;
+                    thisReview.reviewText = req.body.reviewText;
+                    location.save((err, location) => { // save parent document
+                        if (err) {
+                            res
+                                .status(404)
+                                .json(err);
+                        } else {
+                            updateAverageRating(location._id); // need to update average rating in case rating was changed in updated review
+                            res
+                                .status(200)
+                                .json(thisReview);
+                        }
+                    });
+                }
+            } else {
+                res
+                    .status(404)
+                    .json({
+                        "message": "No review to update"
+                    });
+            }
+        }
+        );
 };
 
 function reviewsDeleteOne(req, res) {
