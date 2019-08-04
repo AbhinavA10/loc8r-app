@@ -14,19 +14,19 @@ Uses Font-awesome and Bootstrap
 
 ### app_api
 - REST API for MongoDB
-- used to interface static Express website with Mongo
+- used as a backend for Angular Frontend, to interface with mongo
 - decoupled into a seperate folder in case we need to move it to another server
 - to test the api, use Postman
 - URL parameters are accessed using `req.params`
 - query strings are accessed via `req.query`
 - posted form data accessed via `req.body`
 
-## Env variables needed
+## .Env variables needed
 - 
 
 In production mode only:
-- `MONGODB_URI`
-- `NODE_ENV`
+- `MONGODB_URI=<insert here>`
+- `NODE_ENV=production`
 
 ## REST API
 - stateless api
@@ -45,9 +45,13 @@ In production mode only:
 - should return the saved data as a confirmation
 
 ### PUT
+- for updating existing documents/subdocuments in db
+- should return saved data as a confirmation
+- these still get data from form posted to them, like POST
 
 ### DELETE
 
+## Heroku
 Testing heroku env locally:
 ```
 heroku local
@@ -69,3 +73,6 @@ heroku open
 
 TODO:
 - get google maps static api key
+
+## Mongoose Notes
+if we make changes to the instance returned by a mongoose query, and then save it, Mongoose will update the original document in the database
