@@ -72,6 +72,7 @@ function doAddReview(req, res, location) {
     }
 };
 
+//TODO: move to a utils file
 /**
  * Wrapper to update the average rating of a location document
  * @param {mongoose.Schema.Types.ObjectId} locationId 
@@ -223,12 +224,61 @@ function reviewsUpdateOne(req, res) {
             }
         }
         );
-};
+}
 
+/**
+ * DELETE request handler to delete a single review
+ * @param {*} req 
+ * @param {*} res 
+ */
 function reviewsDeleteOne(req, res) {
-    res
-        .status(200)
-        .json({ "status": "success" });
+    const { locationid, reviewid } = req.params;
+    if (!locationid || !reviewid) {
+        return res
+            .status(404)
+            .json({ 'message': 'Not found, locationid and reviewid are both required' });
+    }
+    // find the parent location
+    Loc
+        .findById(locationid)
+        .select('reviews')
+        .exec((err, location) => {
+            if (!location) {
+                return res
+                    .status(404)
+                    .json({ 'message': 'Location not found' });
+            } else if (err) {
+                return res
+                    .status(400)
+                    .json(err);
+            }
+            //if there are reviews
+            if (location.reviews && location.reviews.length > 0) {
+                if (!location.reviews.id(reviewid)) {
+                    return res
+                        .status(404)
+                        .json({ 'message': 'Review not found' });
+                } else {
+                    location.reviews.id(reviewid).remove(); // remove the review
+                    location.save(err => { // save parent document
+                        if (err) {
+                            return res
+                                .status(404)
+                                .json(err);
+                        } else {
+                            updateAverageRating(location._id); // update avg rating since a review was deleted
+                            res
+                                .status(204)
+                                .json(null);
+                        }
+                    });
+                }
+            } else {
+                res
+                    .status(404)
+                    .json({ 'message': 'No Review to delete' });
+            }
+        });
 };
 
 module.exports = {
