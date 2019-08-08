@@ -1,32 +1,95 @@
-/* GET 'home' page */
-const homelist = (req, res) => {
+const request = require('request'); // node module to make requests to the created REST API
+
+const apiOptions = {
+    server: 'http://localhost:3000'
+};
+// change server for api if in production mode
+if (process.env.NODE_ENV === 'production') {
+    apiOptions.server = 'https://manning-getting-mean.herokuapp.com/';
+}
+
+/* GET 'home' page -> lists all nearby locations */
+function homelist(req, res) {
+    //make a request to our api for all nearby locations
+    const path = '/api/locations';
+    const requestOptions = {
+        url: `${apiOptions.server}${path}`, // server host plus route path
+        method: 'GET', // method of HTTP request
+        json: {}, // data (body) to send... sending an empty json object ensures response body is also json
+        qs: { // query strings  
+            lng: -80.500930, //hardcode some values for now
+            lat: 43.433176,
+            maxDistance: 20 // in km
+        }
+    };
+    //
+    request(
+        requestOptions,
+        (err, { statusCode }, body) => {
+            //body returned by api is array of locations
+            let data = {};
+            if (statusCode === 200) {// if no locations are found, api still returns 200 status code
+                //formating distance:
+                data = [];
+                if (body.length) {
+                    data = body.map((item) => {
+                        item.distance = formatDistance(item.distance);
+                        return item
+                    });
+                }
+            }
+            renderHomepage(req, res, data);
+        }
+    );
+}
+
+/**
+ * Renders the homepage
+ * Created this function to decouple rendering from logic
+ * @param {*} req 
+ * @param {*} res 
+ */
+function renderHomepage(req, res, responseBody) {
+    let message = null;
+    console.log("Is instance of Array?: " + (responseBody instanceof Array))
+    if (!(responseBody instanceof Array)) {
+        // api response did not have a 200 status code
+        message = "API lookup error";
+        responseBody = []; // set as empty array to avoid pug from throwing error
+    } else {
+        // response from API was 200 status code, but empty array since no locations found
+        if (!responseBody.length) {
+            message = "No places found nearby";
+        }
+    }
+
     res.render('locations-list', {
         title: 'Loc8r - find a place to work with wifi',
         pageHeader: {
             title: 'Loc8r',
             strapline: 'Find places to work with wifi near you!'
         },
-        locations: [{
-            name: 'Starcups',
-            address: '125 High Street, Reading, RG6 1PS',
-            rating: 3,
-            facilities: ['Hot drinks', 'Food', 'Premium wifi'],
-            distance: '100m'
-        }, {
-            name: 'Cafe Hero',
-            address: '125 High Street, Reading, RG6 1PS',
-            rating: 4,
-            facilities: ['Hot drinks', 'Food', 'Premium wifi'],
-            distance: '200m'
-        }, {
-            name: 'Burger Queen',
-            address: '125 High Street, Reading, RG6 1PS',
-            rating: 2,
-            facilities: ['Food', 'Premium wifi'],
-            distance: '250m'
-        }]
+        locations: responseBody,
+        message
     });
+}
+
+/**
+ * Formats distance inputted as a string, to display on the homepage
+ * @param {Number} distance 
+ */
+function formatDistance(distance) {
+    let thisDistance = 0;
+    let unit = 'm';
+    if (distance > 1000) { //if distance over 1km, display as km
+        thisDistance = parseFloat(distance / 1000).toFixed(1);
+        unit = 'km';
+    } else {
+        thisDistance = Math.floor(distance);
+    }
+    return thisDistance + unit;
 };
+
 /* GET 'Location info' page */
 const locationInfo = function (req, res) {
     res.render('location-info', {
