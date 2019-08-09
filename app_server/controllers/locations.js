@@ -90,51 +90,75 @@ function formatDistance(distance) {
     return thisDistance + unit;
 };
 
-/* GET 'Location info' page */
-const locationInfo = function (req, res) {
+/**
+ * Renders the location-info page 
+ * @param {*} req 
+ * @param {*} res 
+ */
+function renderDetailPage(req, res, location) {
+    console.log(location);
     res.render('location-info', {
-        title: 'Starcups',
-        pageHeader: { title: 'Starcups' },
+        title: location.name,
+        pageHeader: {
+            title: location.name
+        },
         sidebar: {
             context: 'is on Loc8r because it has accessible wifi and space to sit down with your laptop and get some work done.',
             callToAction: 'If you\'ve been and you like it - or if you don\'t - please leave a review to help other people just like you.'
         },
-        location: {
-            name: 'Starcups',
-            address: '125 High Street, Reading, RG6 1PS',
-            rating: 3,
-            facilities: ['Hot drinks', 'Food', 'Premium wifi'],
-            coords: { lat: 43.437851, lng: -80.526112 },
-            openingTimes: [{
-                days: 'Monday - Friday',
-                opening: '7:00am',
-                closing: '7:00pm',
-                closed: false
-            }, {
-                days: 'Saturday',
-                opening: '8:00am',
-                closing: '5:00pm',
-                closed: false
-            }, {
-                days: 'Sunday',
-                closed: true
-            }],
-            reviews: [{
-                author: 'Simon Holmes',
-                rating: 5,
-                timestamp: '16 July 2013',
-                reviewText: 'What a great place. I can\'t say enough good things about it.'
-            }, {
-                author: 'Charlie Chaplin',
-                rating: 3,
-                timestamp: '16 June 2013',
-                reviewText: 'It was okay. Coffee wasn\'t great, but the wifi was fast.'
-            }]
+        location // pass full location object to view (api response with some formatting changes)
+    });
+}
+/* GET 'Location info' page  - page containing details of a single location*/
+function locationInfo(req, res) {
+    const path = `/api/locations/${req.params.locationid}`;
+    const requestOptions = {
+        url: `${apiOptions.server}${path}`,
+        method: 'GET',
+        json: {}
+        //no query strings needed
+    };
+    request(
+        requestOptions,
+        (err, { statusCode }, body) => {
+            const data = body;
+            if (statusCode === 200) { // we expect 200 status code if successful GET request
+                data.coords = { // view needs coordinates as a key-value pair instead of array
+                    lng: body.coords[0],
+                    lat: body.coords[1]
+                };
+                renderDetailPage(req, res, data);
+            }
+            else { showError(req, res, statusCode); }
         }
+    );
+};
+
+/**
+ * Function to render a page when an api returns a !200 status code
+ * @param {*} req 
+ * @param {*} res 
+ * @param {statusCode} status 
+ */
+function showError(req, res, status) {
+    let title = '';
+    let content = '';
+    if (status === 404) {
+        title = '404, page not found';
+        content = 'Oh dear. Looks like we can\'t find this page. Sorry.';
+    } else {
+        title = `${status}, something's gone wrong`;
+        content = 'Something, somewhere, has gone just a little bit wrong.';
+    }
+    res.status(status);
+    res.render('generic-text', {
+        title,
+        content
     });
 };
+
 /* GET 'Add review' page */
-const addReview = function (req, res) {
+function addReview(req, res) {
     res.render('location-review-form', {
         title: 'Review Starcups on Loc8r',
         pageHeader: { title: 'Review Starcups' }
