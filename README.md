@@ -7,10 +7,12 @@ Frontend built with Angular
 Uses Font-awesome and Bootstrap
 
 ## Project Structure
+When you go to my website, you contact the app_server directly.
 
 ### app_server
 - Backend Express Server API
 - built with MVC architecture
+- when you go to my website, the controller in `/app_server` makes requests to `/app_api`
 
 ### app_api
 - REST API for CRUD operations on MongoDB

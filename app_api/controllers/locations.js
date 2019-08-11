@@ -13,17 +13,12 @@ async function locationsListByDistance(req, res) {
     // ex. api/locations?lng=-0.7992599&lat=51.378091
     const lng = parseFloat(req.query.lng);
     const lat = parseFloat(req.query.lat);
+    const maxDist = parseFloat(req.query.maxDistance); //input in km
     const near = {
         type: "Point",
         coordinates: [lng, lat]
     };
-    const geoOptions = {
-        distanceField: "distance.calculated",
-        spherical: true, // true since search index in MongoDB is a 2dsphere
-        maxDistance: 20000, // circular distance, in meters
-        limit: 10 // show user max 10 closest locations
-    };
-    if (!lng || !lat) {
+    if ((!req.query.lng) || (!req.query.lat) || (!req.query.maxDistance) ){
         // at least one of the query strings was not inputted
         return res
             .status(404)
@@ -31,6 +26,12 @@ async function locationsListByDistance(req, res) {
                 "message": "lng and lat query parameters are required"
             });
     }
+    const geoOptions = {
+        distanceField: "distance.calculated",
+        spherical: true, // true since search index in MongoDB is a 2dsphere
+        maxDistance: maxDist*1000, // circular distance, in meters
+        limit: 10 // show user max 10 closest locations
+    };
     try {
         const results = await Loc.aggregate([{ $geoNear: { near, ...geoOptions } }]); // three dots expand the object
         //create array of locations with data needed, from the query result
@@ -41,7 +42,7 @@ async function locationsListByDistance(req, res) {
                 address: result.address,
                 rating: result.rating,
                 facilities: result.facilities,
-                distance: `${result.distance.calculated.toFixed()}m`
+                distance: `${result.distance.calculated.toFixed()}`
             }
         });
         // send back locations as response
@@ -49,8 +50,6 @@ async function locationsListByDistance(req, res) {
             .status(200)
             .json(locations);
     } catch (err) {
-        // aggregation query returned an error
-        console.log(err);
         res
             .status(404)
             .json(err);
