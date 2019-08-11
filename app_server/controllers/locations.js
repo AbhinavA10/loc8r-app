@@ -183,7 +183,7 @@ function addReview(req, res) {
  * @param {*} res 
  * @param {json}
  */
-function renderReviewForm(req, res, {name}) { // {name} will get only the response.name value.
+function renderReviewForm(req, res, { name }) { // {name} will get only the response.name value.
     res.render('location-review-form', {
         title: `Review ${name} on Loc8r`,
         pageHeader: { title: `Review ${name}` }
@@ -191,7 +191,29 @@ function renderReviewForm(req, res, {name}) { // {name} will get only the respon
 }
 /* POST 'Add review' page */
 function doAddReview(req, res) {
-
+    //get locationid from url so we can tell api
+    const locationid = req.params.locationid;
+    const path = `/api/locations/${locationid}/reviews`;
+    const postdata = {
+        author: req.body.name,//name field in pug = author in api
+        rating: parseInt(req.body.rating, 10),//rating in pug = rating in api
+        reviewText: req.body.review// review field in pug = reviewText in api
+    };
+    const requestOptions = {
+        url: `${apiOptions.server}${path}`,
+        method: 'POST',
+        json: postdata
+    };
+    request(
+        requestOptions,
+        (err, { statusCode }, body) => {
+            const data = body;
+            if (statusCode === 201) { // we expect 201 status code if successful POST request
+                res.redirect(`/location/${locationid}`); // redirect to location detail page. path is wrt root
+            }
+            else { showError(req, res, statusCode); }
+        }
+    );
 };
 
 module.exports = {
