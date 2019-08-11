@@ -111,6 +111,19 @@ function renderDetailPage(req, res, location) {
 }
 /* GET 'Location info' page  - page containing details of a single location*/
 function locationInfo(req, res) {
+    getLocationInfo(req, res,
+        (req, res, responseData) => renderDetailPage(req, res, responseData)
+    );
+};
+
+/**
+ *
+ * Makes API request for a single location
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} callback Function to call after api returns valid response
+ */
+function getLocationInfo(req, res, callback) {
     const path = `/api/locations/${req.params.locationid}`;
     const requestOptions = {
         url: `${apiOptions.server}${path}`,
@@ -127,12 +140,12 @@ function locationInfo(req, res) {
                     lng: body.coords[0],
                     lat: body.coords[1]
                 };
-                renderDetailPage(req, res, data);
+                callback(req, res, data);
             }
             else { showError(req, res, statusCode); }
         }
     );
-};
+}
 
 /**
  * Function to render a page when an api returns a !200 status code
@@ -159,13 +172,31 @@ function showError(req, res, status) {
 
 /* GET 'Add review' page */
 function addReview(req, res) {
-    res.render('location-review-form', {
-        title: 'Review Starcups on Loc8r',
-        pageHeader: { title: 'Review Starcups' }
-    });
+    getLocationInfo(req, res,
+        (req, res, responseData) => renderReviewForm(req, res, responseData)
+    );
 };
+
+/**
+ * Renders the pug template of the add-review form
+ * @param {*} req 
+ * @param {*} res 
+ * @param {json}
+ */
+function renderReviewForm(req, res, {name}) { // {name} will get only the response.name value.
+    res.render('location-review-form', {
+        title: `Review ${name} on Loc8r`,
+        pageHeader: { title: `Review ${name}` }
+    });
+}
+/* POST 'Add review' page */
+function doAddReview(req, res) {
+
+};
+
 module.exports = {
     homelist,
     locationInfo,
-    addReview
+    addReview,
+    doAddReview
 };
