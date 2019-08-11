@@ -186,7 +186,8 @@ function addReview(req, res) {
 function renderReviewForm(req, res, { name }) { // {name} will get only the response.name value.
     res.render('location-review-form', {
         title: `Review ${name} on Loc8r`,
-        pageHeader: { title: `Review ${name}` }
+        pageHeader: { title: `Review ${name}` },
+        error: req.query.err // if an error was returned, pass it into pug
     });
 }
 /* POST 'Add review' page */
@@ -204,16 +205,28 @@ function doAddReview(req, res) {
         method: 'POST',
         json: postdata
     };
-    request(
-        requestOptions,
-        (err, { statusCode }, body) => {
-            const data = body;
-            if (statusCode === 201) { // we expect 201 status code if successful POST request
-                res.redirect(`/location/${locationid}`); // redirect to location detail page. path is wrt root
+    if (!postdata.author || !postdata.rating || !postdata.reviewText) {
+        // perform validation for missing fields on server side, before sending to mongoose in api
+        res.redirect(`/location/${locationid}/review/new?err=val`);
+    } else {
+        request(
+            requestOptions,
+            (err, { statusCode }, { name }) => {
+                if (statusCode === 201) { // we expect 201 status code if successful POST request
+                    res.redirect(`/location/${locationid}`); // redirect to location detail page. path is wrt root
+                } else if (statusCode === 400
+                    && name && name === 'ValidationError') {
+                    //Mongoose threw a validation error through the api
+                    // send back a value of 'val' for validation error as a query string
+                    res.redirect(`/location/${locationid}/review/new?err=val`);
+                }
+                else {
+                    console.log(body);
+                    showError(req, res, statusCode);
+                }
             }
-            else { showError(req, res, statusCode); }
-        }
-    );
+        );
+    }
 };
 
 module.exports = {

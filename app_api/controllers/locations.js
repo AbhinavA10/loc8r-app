@@ -50,8 +50,6 @@ async function locationsListByDistance(req, res) {
             .status(200)
             .json(locations);
     } catch (err) {
-        // aggregation query returned an error
-        console.log(err);
         res
             .status(404)
             .json(err);

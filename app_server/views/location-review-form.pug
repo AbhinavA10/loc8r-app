@@ -8,7 +8,9 @@ block content
         .col-12.col-md-8
             // if action value is blank, form will post to the url it is displayed on
             // therfore, /location/:locationid/review/new
-            form(action="", method="post", role="form")
+            form(action="", method="post", role="form")#addReview
+                - if (error == "val")
+                    .alert.alert-danger(role="alert") All fields required, please try again
                 .form-group.row
                     label.col-10.col-sm-2.col-form-label(for="name") Name
                     .col-12.col-sm-10
