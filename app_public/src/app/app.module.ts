@@ -1,16 +1,26 @@
+// this is the module definition. It tells what componenets are compiled into this modoule
+
+// import pieces of angular functionality that the app will use
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppComponent } from './app.component';
+//import components that the app will use
+import { HomeListComponent } from './home-list/home-list.component';
+import { DistancePipe } from './distance.pipe';
 
+// Describe module using a decorator
+// Decorator: 
 @NgModule({
   declarations: [
-    AppComponent
+    HomeListComponent,
+    DistancePipe
   ],
   imports: [
     BrowserModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [HomeListComponent] //HomeListComponent is the entry point of application
 })
+
+//export the module
 export class AppModule { }

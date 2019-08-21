@@ -23,6 +23,11 @@ When you go to my website, you contact the app_server directly.
 - query strings are accessed via `req.query`
 - posted form data accessed via `req.body`
 
+### app_public
+Angular Front end
+- Angular applications are built with components, which are compiled into modules
+- A component handles a specific piece of functionality, and a module contains one or more components working together
+
 ## .Env variables needed
 - 
 
