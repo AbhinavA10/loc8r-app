@@ -6,13 +6,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'; //inject http service into this service so we can make requests to api
 import { Location, Review } from './location';// location class,
+import { environment } from '../environments/environment';
 
 @Injectable({ // Decorator that marks a class as available to be provided and injected as a dependency.
   providedIn: 'root'
   // the above takes the place of explcitily listing services in the providers array of app module
 })
 export class Loc8rDataService {
-  private apiBaseUrl = 'http://localhost:3000/api';
+  private apiBaseUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) { } //Angular manages dependancy injection using constructor
 

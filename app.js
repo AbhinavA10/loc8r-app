@@ -6,7 +6,7 @@ const logger = require('morgan');
 // best practice: connect to mongoose as soon as app loads
 require('./app_api/models/db'); // connect to mongo and mongoose and load models
 
-const indexRouter = require('./app_server/routes/index');
+// const indexRouter = require('./app_server/routes/index'); // for express and pug front end
 const apiRoutes = require('./app_api/routes/index');
 
 var app = express();
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser()); // takes incoming request and puts cookie info in req instead
 app.use(express.static(path.join(__dirname, 'public'))); // find static files, such as css
-app.use(express.static(path.join(__dirname, 'app_public'))); // to reference the built angular files
+app.use(express.static(path.join(__dirname, 'app_public', 'build'))); // to reference the built angular files
 
 // Enable CORS so Angular front-end can make api requests
 app.use('/api', (req, res, next) => {
@@ -32,8 +32,11 @@ app.use('/api', (req, res, next) => {
   next();
 });
 
-app.use('/', indexRouter);
+// app.use('/', indexRouter); // for express and pug front end
 app.use('/api', apiRoutes);
+app.get(/(\/about)|(\/location\/[a-z0-9]{24})/, function(req, res, next) { // use regex to match urls
+  res.sendFile(path.join(__dirname, 'app_public', 'build', 'index.html'));
+  });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
