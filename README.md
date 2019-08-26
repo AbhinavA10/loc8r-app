@@ -13,6 +13,7 @@ When you go to my website, you contact the app_server directly.
 - Backend Express Server API
 - built with MVC architecture
 - when you go to my website, the controller in `/app_server` makes requests to `/app_api`
+- CORS headers enabled on API routes so Angular front-end can make requests
 
 ### app_api
 - REST API for CRUD operations on MongoDB
@@ -22,6 +23,13 @@ When you go to my website, you contact the app_server directly.
 - URL parameters are accessed using `req.params`
 - query strings are accessed via `req.query`
 - posted form data accessed via `req.body`
+
+### app_public
+Angular Front end
+- Angular applications are built with components, which are compiled into modules
+- A component handles a specific piece of functionality, and a module contains one or more components working together
+- service makes the api requests
+- currently only the homepage is built in angular, and is embedded into the express app
 
 ## .Env variables needed
 - 
