@@ -4,7 +4,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule, Router } from '@angular/router'; // use Angular's router to navigate between pages in this SPA
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // for ngModel in review form page
+
+import { AppRoutingModule } from './app-routing/app-routing.module'; // our router
 
 //import components that the app will use
 import { FrameworkComponent } from './framework/framework.component';
@@ -16,6 +18,9 @@ import { PageHeaderComponent } from './page-header/page-header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { HtmlLineBreaksPipe } from './html-line-breaks.pipe';
 import { RatingStarsComponent } from './rating-stars/rating-stars.component';
+import { LocationDetailsComponent } from './location-details/location-details.component';
+import { DetailsPageComponent } from './details-page/details-page.component';
+import { MostRecentFirstPipe } from './most-recent-first.pipe';
 
 // Describe module using a decorator
 // Decorator: 
@@ -29,23 +34,17 @@ import { RatingStarsComponent } from './rating-stars/rating-stars.component';
     PageHeaderComponent,
     SidebarComponent,
     HtmlLineBreaksPipe,
-    RatingStarsComponent
+    RatingStarsComponent,
+    LocationDetailsComponent,
+    DetailsPageComponent,
+    MostRecentFirstPipe
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    RouterModule.forRoot([
-      // paths do not contain leading or trailing slashes, and we leave out anything defined in index.html's 'base href'
-      // this is where we define our routes
-      {
-        path: '', //homepage route
-        component: HomepageComponent // use this component for the route defined in above line
-      },
-      {
-        path: 'about',
-        component: AboutComponent
-      }
-    ])
+    FormsModule,
+    ReactiveFormsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [FrameworkComponent] //FrameworkComponent is the entry point of application, and holds the navigation
