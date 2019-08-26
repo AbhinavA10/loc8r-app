@@ -31,7 +31,7 @@ export class Loc8rDataService {
       .then(response => response as Location[]) // convert response to a json object typed location
       .catch(this.handleError);
   }
-  
+
   /**
    * Error Handler
    * @param error 

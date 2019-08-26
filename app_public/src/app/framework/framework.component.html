@@ -1,0 +1,31 @@
+<!--This is i.e. layout.pug-->
+<!--it is the navigation, content container and footer-->
+
+<nav class="navbar fixed-top navbar-expand-md navbar-light">
+    <div class="container">
+        <a routerLink="" class="navbar-brand">Loc8r</a>
+        <!--To create href links, we need to use the routerLink angular directive-->
+        <button type="button" data-toggle="collapse" data-target="#navbarMain"class="navbar-toggler">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarMain" class="navbar-collapse collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a routerLink="about" class="nav-link">About</a>
+                    <!-- routerLink values are the routes, and are defined in the app.module.ts file-->
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container content">
+    <!--Angular adds the routed component after this tag, not inside it,-->
+    <router-outlet></router-outlet>
+    <footer>
+        <div class="row">
+            <div class="col-12">
+                <small>&copy; Locate the wifi - AbhinavA10 2019</small>
+            </div>
+        </div>
+    </footer>
+</div>
