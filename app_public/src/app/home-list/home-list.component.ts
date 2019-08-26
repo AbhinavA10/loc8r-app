@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';//imports what it needs from angular
+import { Component, OnInit } from '@angular/core'; //imports what it needs from angular
+import { Loc8rDataService } from '../loc8r-data.service'; // import api caller service
 
+/**
+ * Data structure that models a single location's data
+ */
 export class Location {
   _id: string;
   name: string;
@@ -21,24 +25,20 @@ export class Location {
 //export component as a class
 export class HomeListComponent implements OnInit {
 
-  constructor() { }
-  locations: Location[] = [{
-    _id: '590d8dc7a7cb5b8e3f1bfc48',
-    name: 'Costy',
-    distance: 14000.1234,
-    address: 'High Street, Reading',
-    rating: 3,
-    facilities: ['hot drinks', 'food', 'power']
-    }, {
-    _id: '590d8dc7a7cb5b8e3f1bfc48',
-    name: 'Starcups',
-    distance: 120.542,
-    address: 'High Street, Reading',
-    rating: 5,
-    facilities: ['wifi', 'food', 'hot drinks']
-    }];
+  constructor(private loc8rDataService: Loc8rDataService) { } // inject our api services
+  public locations: Location[]; // whenever this value is updated, the html will automatically be updated
+  /**
+   * Make request to api using service for list of locations nearby
+   */
+  private getLocations(): void {
+    this.loc8rDataService
+      .getLocations()
+      .then(foundLocations =>{this.locations = foundLocations; console.log(this.locations)});
+  }
 
   ngOnInit() {
+    // this hook is called when this component is fully initialized
+    this.getLocations();
   }
 
 }
