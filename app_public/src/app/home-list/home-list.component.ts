@@ -12,6 +12,7 @@ export class Location {
   address: string;
   rating: number;
   facilities: string[];
+  reviews: any[];
   // each object that is defined with the clas 'Location' must have a value for each of the above fields.
 }
 

@@ -46,6 +46,7 @@ function doAddReview(req, res, location) {
     } else {
         //get data from post request
         const { author, rating, reviewText } = req.body;
+        //console.log(req.body);
         // add a new review to the array of reviews in the parent location document
         location.reviews.push({
             author,
