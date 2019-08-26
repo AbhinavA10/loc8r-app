@@ -29,6 +29,8 @@ Angular Front end SPA
 - Angular applications are built with components, which are compiled into modules
 - A component handles a specific piece of functionality, and a module contains one or more components working together
 - service makes the api requests
+- geolocation service uses native HTML5 geolocation function to get lat/lng of user
+- uses Angular's router to navigate between pages
 
 ## .Env variables needed
 - 
