@@ -40,3 +40,10 @@ Example:
     <span *ngSwitchDefault>{{ time.opening + " - " + time.closing}}</span>
 </p>
 ```
+
+### Form data-binding
+To add a data binding to a form field, use a directive with a special syntax like this: 
+```html
+[(ngModel)]="bindingName".
+```
+- `(click)` is Angular's click handler

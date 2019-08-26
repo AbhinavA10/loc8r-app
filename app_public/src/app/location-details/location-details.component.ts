@@ -13,7 +13,14 @@ import { Location } from '../home-list/home-list.component';
 export class LocationDetailsComponent implements OnInit {
 
   @Input() location: Location;
-  public googleAPIKey: string = "null";
+  public googleAPIKey: string = "null"; // Google Maps API Key
+  public formVisible: boolean = false;
+  public newReview = {
+    author: '',
+    rating: 5,
+    reviewText: ''
+  };
+
   constructor() { }
 
   ngOnInit() {
