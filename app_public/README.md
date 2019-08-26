@@ -18,7 +18,9 @@ ng build --prod --output-path build
 
 
 ## Notes
-In Angular, double curly brackets are used to denote a binding between the data and the view. 
-The value is probably defined in the ts file for the same component.
+- In Angular, double curly brackets are used to denote a binding between the data and the view. 
+- The value is probably defined in the ts file for the same component.
+- component to control the services rather than perform the functions.
+- any code that’s interacting with APIs, running logic, or performing operations should be externalized into services
 ### Angular Decorators
 https://ultimatecourses.com/blog/angular-decorators
