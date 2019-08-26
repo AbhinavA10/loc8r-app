@@ -4,8 +4,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule, Router } from '@angular/router'; // use Angular's router to navigate between pages in this SPA
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // for ngModel in review form page
+
+import { AppRoutingModule } from './app-routing/app-routing.module'; // our router
 
 //import components that the app will use
 import { FrameworkComponent } from './framework/framework.component';
@@ -43,24 +44,7 @@ import { MostRecentFirstPipe } from './most-recent-first.pipe';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot([
-      // paths do not contain leading or trailing slashes, and we leave out anything defined in index.html's 'base href'
-      // this is where we define our routes
-      {
-        path: '', //homepage route
-        component: HomepageComponent // use this component for the route defined in above line
-      },
-      {
-        // the about page
-        path: 'about',
-        component: AboutComponent
-      },
-      {
-        // for detail page of each location
-        path: 'location/:locationId',
-        component: DetailsPageComponent
-        }
-    ])
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [FrameworkComponent] //FrameworkComponent is the entry point of application, and holds the navigation

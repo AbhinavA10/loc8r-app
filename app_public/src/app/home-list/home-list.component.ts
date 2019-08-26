@@ -1,20 +1,7 @@
 import { Component, OnInit } from '@angular/core'; //imports what it needs from angular
 import { Loc8rDataService } from '../loc8r-data.service'; // import api caller service
 import { GeolocationService } from '../geolocation.service'; // import api caller service  
-
-/**
- * Data structure that models a single location's data
- */
-export class Location {
-  _id: string;
-  name: string;
-  distance: number;
-  address: string;
-  rating: number;
-  facilities: string[];
-  reviews: any[];
-  // each object that is defined with the clas 'Location' must have a value for each of the above fields.
-}
+import { Location } from '../location';
 
 //decorate the component -> give information the app needs to run this component
 @Component({
