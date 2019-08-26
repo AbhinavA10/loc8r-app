@@ -34,7 +34,7 @@ export class DetailsPageComponent implements OnInit {
         })
       ).subscribe((newLocation: Location) => { // getLocationById observable finishes, 
         this.newLocation = newLocation;
-        console.log(newLocation);
+        //console.log(newLocation);
         this.pageContent.header.title = newLocation.name;
         this.pageContent.sidebar = `${newLocation.name} is on Loc8r
         because it has accessible wifi and space to sit down with
