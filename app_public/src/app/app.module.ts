@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Router } from '@angular/router'; // use Angular's router to navigate between pages in this SPA
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // for ngModel in review form page
 
 //import components that the app will use
 import { FrameworkComponent } from './framework/framework.component';
@@ -40,6 +41,8 @@ import { MostRecentFirstPipe } from './most-recent-first.pipe';
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       // paths do not contain leading or trailing slashes, and we leave out anything defined in index.html's 'base href'
       // this is where we define our routes

@@ -33,7 +33,7 @@ Angular Front end SPA
 - uses Angular's router to navigate between pages
 
 ## .Env variables needed
-- 
+- `googleAPIKey` in `location-details.component.ts` in `app_public/`
 
 In production mode only:
 - `MONGODB_URI=<insert here>`
