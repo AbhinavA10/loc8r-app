@@ -1,1 +1,5 @@
-<p>about works!</p>
+<app-page-header [content]="pageContent.header"></app-page-header>
+<div class="row">
+    <!--Safely bind html using a property binding: -->
+    <div class="col-12 col-lg-8" [innerHTML]="pageContent.content | htmlLineBreaks"></div>
+</div>
