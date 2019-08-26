@@ -5,7 +5,12 @@
         <div class="card card-primary">
             <div class="card-block">
                 <h2 class="card-title">Opening hours</h2>
-                <!-- Opening times to go here -->
+                <p class="card-text" *ngFor="let time of location.openingTimes"[ngSwitch]="time.closed">
+                    {{ time.days }} :
+                    <span *ngSwitchCase="true">Closed</span>
+                    <span *ngSwitchDefault>{{ time.opening + " - " + time.closing}}
+                    </span>
+                </p>
             </div>
         </div>
         <div class="card card-primary">
@@ -33,11 +38,11 @@
             <div class="card-block">
                 <a href="/location/{{location._id}}/review/new" class="btn btn-primary float-right">Add review</a>
                 <h2 class="card-title">Customer reviews</h2>
-                <div *ngFor="let review of location.reviews" class="row review">
+                <div *ngFor="let review of location.reviews | mostRecentFirst" class="row review">
                     <div class="col-12 no-gutters review-header">
                         <app-rating-stars [rating]="review.rating"></app-rating-stars>
-                        <span class="reviewAuthor">{{ review.author }}</span>
-                        <small class="reviewTimestamp">{{ review.createdOn }}</small>
+                        <span class="reviewAuthor">{{" " + review.author + " " }}</span>
+                        <small class="reviewTimestamp">{{ review.createdOn | date:'d MMMM yyyy' }}</small>
                     </div>
                     <div class="col-12">
                         <p [innerHTML]="review.reviewText | htmlLineBreaks"></p>
