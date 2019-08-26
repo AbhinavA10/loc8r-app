@@ -8,7 +8,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 // ActivatedRoute -> get the value of the current route from inside the component
 //ParamMap -> get url paramters of current route, returns an observable
 import { Loc8rDataService } from '../loc8r-data.service'; // since all 3 sub components need data of the location, we make api call here
-import { Location } from '../home-list/home-list.component';
+import { Location } from '../location';
 import { switchMap } from 'rxjs/operators'; // get values from ParamMap observable and use to call the api by second observable
 
 @Component({

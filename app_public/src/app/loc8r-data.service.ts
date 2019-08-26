@@ -5,7 +5,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'; //inject http service into this service so we can make requests to api
-import { Location } from './home-list/home-list.component'; // location class, from home component
+import { Location, Review } from './location';// location class,
 
 @Injectable({ // Decorator that marks a class as available to be provided and injected as a dependency.
   providedIn: 'root'
@@ -45,12 +45,12 @@ export class Loc8rDataService {
   /**
    * Make POST Request to API to add a new review
    */
-  public addReviewByLocationId(locationId: string, formData: any): Promise<any> {
+  public addReviewByLocationId(locationId: string, formData: any): Promise<Review> {
     const url: string = `${this.apiBaseUrl}/locations/${locationId}/reviews`;
     return this.http
       .post(url, formData)
       .toPromise()
-      .then(response => response as any)
+      .then(response => response as Review)
       .catch(this.handleError);
   }
 
