@@ -33,7 +33,7 @@ export class HomeListComponent implements OnInit {
   private getLocations(): void {
     this.loc8rDataService
       .getLocations()
-      .then(foundLocations =>{this.locations = foundLocations; console.log(this.locations)});
+      .then(foundLocations => { this.locations = foundLocations; });
   }
 
   ngOnInit() {

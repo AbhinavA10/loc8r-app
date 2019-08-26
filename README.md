@@ -25,11 +25,10 @@ When you go to my website, you contact the app_server directly.
 - posted form data accessed via `req.body`
 
 ### app_public
-Angular Front end
+Angular Front end SPA
 - Angular applications are built with components, which are compiled into modules
 - A component handles a specific piece of functionality, and a module contains one or more components working together
 - service makes the api requests
-- currently only the homepage is built in angular, and is embedded into the express app
 
 ## .Env variables needed
 - 
