@@ -31,6 +31,18 @@ export class Loc8rDataService {
   }
 
   /**
+   * Make GET Request to API for details on a specific location
+   */
+  public getLocationById(locationId: string): Promise<Location> {
+    const url: string = `${this.apiBaseUrl}/locations/${locationId}`;
+    return this.http
+      .get(url) // make http api call with GET
+      .toPromise() // convert Angular's 'Observable' to a 'Promise'
+      .then(response => response as Location) // convert response to a json object typed location
+      .catch(this.handleError);
+  }
+
+  /**
    * Error Handler
    * @param error 
    */
