@@ -11,6 +11,9 @@ import { FrameworkComponent } from './framework/framework.component';
 import { HomeListComponent } from './home-list/home-list.component';
 import { DistancePipe } from './distance.pipe';
 import { AboutComponent } from './about/about.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { PageHeaderComponent } from './page-header/page-header.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 // Describe module using a decorator
 // Decorator: 
@@ -19,7 +22,10 @@ import { AboutComponent } from './about/about.component';
     HomeListComponent,
     DistancePipe,
     FrameworkComponent,
-    AboutComponent
+    AboutComponent,
+    HomepageComponent,
+    PageHeaderComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +35,7 @@ import { AboutComponent } from './about/about.component';
       // this is where we define our routes
       {
         path: '', //homepage route
-        component: HomeListComponent // use this component for the route defined in above line
+        component: HomepageComponent // use this component for the route defined in above line
       },
       {
         path: 'about',
