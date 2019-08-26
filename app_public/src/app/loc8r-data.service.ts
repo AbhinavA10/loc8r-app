@@ -43,6 +43,18 @@ export class Loc8rDataService {
   }
 
   /**
+   * Make POST Request to API to add a new review
+   */
+  public addReviewByLocationId(locationId: string, formData: any): Promise<any> {
+    const url: string = `${this.apiBaseUrl}/locations/${locationId}/reviews`;
+    return this.http
+      .post(url, formData)
+      .toPromise()
+      .then(response => response as any)
+      .catch(this.handleError);
+  }
+
+  /**
    * Error Handler
    * @param error 
    */
