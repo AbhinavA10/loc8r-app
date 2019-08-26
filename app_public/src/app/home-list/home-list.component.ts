@@ -37,7 +37,6 @@ export class HomeListComponent implements OnInit {
    * Make request to api using service for list of locations nearby
    */
   private getLocations(position: any): void {
-    console.log(position)
     this.message = 'Searching for nearby places';
     const lat: number = position.coords.latitude; //extract coords
     const lng: number = position.coords.longitude;

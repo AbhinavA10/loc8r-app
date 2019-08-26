@@ -19,7 +19,7 @@ export class Loc8rDataService {
   /**
    * Make GET Request to API for nearby locations
    */
-  public getLocations(lng: number, lat: number): Promise<Location[]> {
+  public getLocations(lat: number, lng: number): Promise<Location[]> {
     const maxDistance: number = 20;
     //build url to call the api at
     const url: string = `${this.apiBaseUrl}/locations?lng=${lng}&lat=${lat}&maxDistance=${maxDistance}`;
