@@ -24,6 +24,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser()); // takes incoming request and puts cookie info in req instead
 app.use(express.static(path.join(__dirname, 'public'))); // find static files, such as css
 
+// Enable CORS so Angular front-end can make api requests
+app.use('/api', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:4200'); // url where a cors is allowed
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
 app.use('/', indexRouter);
 app.use('/api', apiRoutes);
 
