@@ -23,6 +23,8 @@ When you go to my website, you contact the app_server directly.
 - URL parameters are accessed using `req.params`
 - query strings are accessed via `req.query`
 - posted form data accessed via `req.body`
+- user password is saved in database after hashing with cryptographically secure salt and `pbkdf2`
+- uses JWT to authenticate users between API and SPA
 
 ### app_public
 Angular Front end SPA
@@ -34,6 +36,7 @@ Angular Front end SPA
 
 ## .Env variables needed
 - `googleAPIKey` in `location-details.component.ts` in `app_public/`
+- JWT_SECRET
 
 In production mode only:
 - `MONGODB_URI=<insert here>`
@@ -87,3 +90,12 @@ TODO:
 
 ## Mongoose Notes
 if we make changes to the instance returned by a mongoose query, and then save it, Mongoose will update the original document in the database
+
+## JWT Notes
+`Header.Payload.Signature`
+- Header: An encoded JSON object containing the type and the hashing algorithm
+used
+- Payload: encoded JSON object containing the data, the real body of the
+token
+- Signature: an encrypted hash of the header and payload, using a secret that
+only the originating server knows

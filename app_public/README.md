@@ -1,21 +1,11 @@
 # Loc8rPublic
 Angular Front end for our application
 
-## Development server
+## Angular Architecture
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+![Detail page Architecture](../imgs_readme/Detail_Page_Nesting_Architecture.png)
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-```
-ng build --prod --output-path build
-```
-
+![Home page Architecture](../imgs_readme/Home_Page_Nesting_Architecture.png)
 
 ## Notes
 - In Angular, double curly brackets are used to denote a binding between the data and the view. 
@@ -47,3 +37,19 @@ To add a data binding to a form field, use a directive with a special syntax lik
 [(ngModel)]="bindingName".
 ```
 - `(click)` is Angular's click handler
+
+
+## Development server
+
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## Code scaffolding
+
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+
+## Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```
+ng build --prod --output-path build
+```
