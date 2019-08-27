@@ -84,7 +84,6 @@ To open url for app
 heroku open
 ```
 
-
 TODO:
 - get google maps static api key
 
