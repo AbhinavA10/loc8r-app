@@ -13,12 +13,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    hash: String, // hash = encrypted(user's password + salt )
+    hash: String, // hash = encrypted(user's password + salt)
     salt: String
 });
 
 /**
  * Set password for a user
+ * Made so process was abstracted away from user registration
  */
 userSchema.methods.setPassword = function (password) {
     // in mongoose model methods, 'this' refers to the instance of the model itself
@@ -30,6 +31,7 @@ userSchema.methods.setPassword = function (password) {
 
 /**
  * Validate a password if a user was found
+ * @returns Whether the password inputted matches the one in the database
  */
 userSchema.methods.validPassword = function (password) {
     const hash = crypto
