@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 
-// Configure a strategy
+// Configure a strategy, to be used during login
 passport.use(new LocalStrategy({
     usernameField: 'email' // change passport's default 'username' field to 'email'
 },
