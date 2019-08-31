@@ -24,7 +24,8 @@ When you go to my website, you contact the app_server directly.
 - query strings are accessed via `req.query`
 - posted form data accessed via `req.body`
 - user password is saved in database after hashing with cryptographically secure salt and `pbkdf2`
-- uses JWT to authenticate users between API and SPA
+- uses JWTs to authenticate users between API and SPA using `passport`'s `LocalStrategy`. This provides a stateless authentication solution.
+    - 'new review' endpoints are limited to authenticated users only
 
 ### app_public
 Angular Front end SPA
@@ -98,3 +99,5 @@ used
 token
 - Signature: an encrypted hash of the header and payload, using a secret that
 only the originating server knows
+- https://medium.com/swlh/a-practical-guide-for-jwt-authentication-using-nodejs-and-express-d48369e7e6d4
+- https://hptechblogs.com/using-json-web-token-for-authentication/

@@ -6,6 +6,7 @@ const User = mongoose.model('User');
  * Register controller to create a new user
  * @param {*} req 
  * @param {*} res 
+ * @returns a JWT if successful
  */
 function register(req, res) {
     if (!req.body.name || !req.body.email || !req.body.password) { // validate required fields have been sent
@@ -43,8 +44,8 @@ function login(req, res) {
             .status(400)
             .json({ "message": "All fields required" });
     }
-    // use passport to authenticate the user
-    passport.authenticate('local', (err, user, info) => {
+    // use passport to authenticate the user, using the local strategy we defined earlier
+    passport.authenticate('local', (err, user, info) => { // this lambda function is the 'done' callback in the strategy we defined
         let token;
         if (err) { // when passport returns an error
             return res

@@ -51,9 +51,8 @@ userSchema.methods.generateJwt = function () {
         _id: this._id, // payload
         email: this.email,// payload
         name: this.name,// payload
-        exp: parseInt(expiry.getTime() / 1000, 10), // expiry of JWT so user has to login again after this
-    }, process.env.JWT_SECRET); // JWT_SECRET is sent into this function for the hashing algorithim to use
+        exp: parseInt(expiry.getTime() / 1000, 10), // expiry of JWT so user has to login again after this. Part of the payload
+    }, process.env.JWT_SECRET); // JWT_SECRET is sent into this function for the hashing algorithim to use, for the 3rd part of a JWT
 };
-
 
 mongoose.model('User', userSchema);
