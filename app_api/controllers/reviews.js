@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Loc = mongoose.model('Location');  // see comment in app_api/controllers/locations.js
+const User = mongoose.model('User'); // for the getAuthor function
 
 /**
  * POST request to add a new review for a given location
@@ -7,28 +8,33 @@ const Loc = mongoose.model('Location');  // see comment in app_api/controllers/l
  * @param {*} res 
  */
 function reviewsCreate(req, res) {
-    // to create a subdocument: find parent document, add a new subdocument, then save the parent documents
-    //finding the parent document
-    const locationId = req.params.locationid;
-    if (locationId) {
-        Loc
-            .findById(locationId)
-            .select('reviews')
-            .exec((err, location) => {
-                if (err) {
-                    res
-                        .status(400)
-                        .json(err);
-                } else {
-                    // add a new review
-                    doAddReview(req, res, location);
-                }
-            });
-    } else {
-        res
-            .status(404)
-            .json({ "message": "Location not found" });
-    }
+    console.log('authenticated');
+    getAuthor(req, res,
+        (req, res, userName) => {
+            console.log("in callback")
+            // to create a subdocument: find parent document, add a new subdocument, then save the parent documents
+            //finding the parent document
+            const locationId = req.params.locationid;
+            if (locationId) {
+                Loc
+                    .findById(locationId)
+                    .select('reviews')
+                    .exec((err, location) => {
+                        if (err) {
+                            res
+                                .status(400)
+                                .json(err);
+                        } else {
+                            // add a new review
+                            doAddReview(req, res, location, userName);
+                        }
+                    });
+            } else {
+                res
+                    .status(404)
+                    .json({ "message": "Location not found" });
+            }
+        });
 };
 
 /**
@@ -36,8 +42,9 @@ function reviewsCreate(req, res) {
  * @param {*} req 
  * @param {*} res 
  * @param {Location} location 
+ * @param {string} username
  */
-function doAddReview(req, res, location) {
+function doAddReview(req, res, location, author) {
     if (!location) {
         // query never returned a result
         res
@@ -45,11 +52,11 @@ function doAddReview(req, res, location) {
             .json({ "message": "Location not found" });
     } else {
         //get data from post request
-        const { author, rating, reviewText } = req.body;
+        const { rating, reviewText } = req.body;
         //console.log(req.body);
         // add a new review to the array of reviews in the parent location document
         location.reviews.push({
-            author,
+            author, // author comes i.e. from JWT
             rating,
             reviewText
         });
@@ -280,6 +287,37 @@ function reviewsDeleteOne(req, res) {
                     .json({ 'message': 'No Review to delete' });
             }
         });
+};
+
+/**
+ * Validate that the user exists in the database and return the user’s name for use in the controller
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} callback 
+ */
+function getAuthor(req, res, callback) {
+    // console.log(req.payload); // shows the payload of the JWT, and that we are able to decode the jwt.
+    if (req.payload && req.payload.email) { // data from JWT
+        User.findOne({ email: req.payload.email }) // use email address to find a user
+            .exec((err, user) => {
+                console.log("result");
+                if (!user) {
+                    return res
+                        .status(404)
+                        .json({ "message": "User not found" });
+                } else if (err) {
+                    console.log(err);
+                    return res
+                        .status(404)
+                        .json(err);
+                }
+                callback(req, res, user.name); // user was found, so return the name of the user to the callback
+            });
+    } else {
+        return res
+            .status(404)
+            .json({ "message": "User not found" });
+    }
 };
 
 module.exports = {

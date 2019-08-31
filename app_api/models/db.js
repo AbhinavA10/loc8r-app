@@ -49,3 +49,4 @@ mongoose.connection.on('disconnected', () => {
 
 mongoose.connect(dbURI, { useNewUrlParser: true });
 require('./locations');
+require('./users');
