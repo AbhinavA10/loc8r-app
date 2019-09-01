@@ -7,6 +7,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'; //inject http service into this service so we can make requests to api
 import { Location, Review } from './location';// location class,
 import { environment } from '../environments/environment';
+import { User } from './user';
+import { AuthResponse } from './authresponse';
 
 @Injectable({ // Decorator that marks a class as available to be provided and injected as a dependency.
   providedIn: 'root'
@@ -62,5 +64,36 @@ export class Loc8rDataService {
   private handleError(error: any): Promise<any> {
     console.error('Something has gone wrong', error);
     return Promise.reject(error.message || error);
+  }
+
+  /**
+   * Used on login
+   * @param user 
+   */
+  public login(user: User): Promise<AuthResponse> {
+    return this.makeAuthApiCall('login', user);
+  }
+
+  /**
+   * Used on registration
+   * @param user 
+   */
+  public register(user: User): Promise<AuthResponse> {
+    return this.makeAuthApiCall('register', user);
+  }
+
+  /**
+   * Makes a POST request for Authentication routes in the API
+   * As login and registration are similar, we seperate this repeated code out.
+   * @param urlPath 
+   * @param user 
+   */
+  private makeAuthApiCall(urlPath: string, user: User): Promise<AuthResponse> {
+    const url: string = `${this.apiBaseUrl}/${urlPath}`;
+    return this.http
+      .post(url, user)
+      .toPromise()
+      .then(response => response as AuthResponse) // response during login or registration will be a JWT
+      .catch(this.handleError);
   }
 }
