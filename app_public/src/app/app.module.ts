@@ -21,6 +21,8 @@ import { RatingStarsComponent } from './rating-stars/rating-stars.component';
 import { LocationDetailsComponent } from './location-details/location-details.component';
 import { DetailsPageComponent } from './details-page/details-page.component';
 import { MostRecentFirstPipe } from './most-recent-first.pipe';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
 
 // Describe module using a decorator
 // Decorator: 
@@ -37,7 +39,9 @@ import { MostRecentFirstPipe } from './most-recent-first.pipe';
     RatingStarsComponent,
     LocationDetailsComponent,
     DetailsPageComponent,
-    MostRecentFirstPipe
+    MostRecentFirstPipe,
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
