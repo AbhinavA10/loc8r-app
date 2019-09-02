@@ -1,24 +1,13 @@
 # Loc8r
-Angular app to find locations with wifi closeby.
+Angular SPA to find locations with wifi nearby
 
-Uses the MEAN stack: backend REST API built with Mongo, Express and Node.js
-Frontend built with Angular
-
-Uses Font-awesome and Bootstrap
+Uses the MEAN stack: backend REST API built with `Mongo`, `Express.js` and `Node.js`. Frontend built with `Angular 8`. Also uses `font-awesome 5.8.1` and `Bootstrap 4.3.1`
 
 ## Project Structure
-When you go to my website, you contact the app_server directly.
-
-### app_server
-- Backend Express Server API
-- built with MVC architecture
-- when you go to my website, the controller in `/app_server` makes requests to `/app_api`
-- CORS headers enabled on API routes so Angular front-end can make requests
 
 ### app_api
-- REST API for CRUD operations on MongoDB
+REST API for CRUD operations on MongoDB
 - used as a backend for Angular Frontend, to interface with mongo
-- decoupled into a seperate folder in case we need to move it to another server
 - to test the api, use Postman
 - URL parameters are accessed using `req.params`
 - query strings are accessed via `req.query`
@@ -26,19 +15,29 @@ When you go to my website, you contact the app_server directly.
 - user password is saved in database after hashing with cryptographically secure salt and `pbkdf2`
 - uses JWTs to authenticate users between API and SPA using `passport`'s `LocalStrategy`. This provides a stateless authentication solution.
     - 'new review' endpoints are limited to authenticated users only
+- this api is run using the root `app.js` file
 
 ### app_public
 Angular Front end SPA
 - Angular applications are built with components, which are compiled into modules
 - A component handles a specific piece of functionality, and a module contains one or more components working together
-- service makes the api requests
+- a service makes the api requests
 - geolocation service uses native HTML5 geolocation function to get lat/lng of user
 - uses Angular's router to navigate between pages
-- JWT is saved in `localStorage` so it is saved across page reloads
+- JWT is saved in `localStorage` so it is maintained across page reloads
 - A custom service (`history`) is used to keep track of visited pages. This way, user can return to a page after login
+- see the [README for more](./app_public/README.md)
+
+
+### app_server (deprecated)
+- Backend Express Server API
+- built with MVC architecture
+- when you go to my website, the controller in `/app_server` makes requests to `/app_api`
+- CORS headers enabled on API routes so Angular front-end can make requests
+- this component was deprecated once angular was introduced. 
 
 ## .Env variables needed
-- `googleAPIKey` in `location-details.component.ts` in `app_public/`
+- `googleAPIKey` in `app_public\src\app\location-details\location-details.component.ts`
 - JWT_SECRET
 
 In production mode only:
@@ -87,19 +86,20 @@ To open url for app
 heroku open
 ```
 
-TODO:
-- get google maps static api key
-
 ## Mongoose Notes
 if we make changes to the instance returned by a mongoose query, and then save it, Mongoose will update the original document in the database
 
 ## JWT Notes
-`Header.Payload.Signature`
+A JWT is of the form `Header.Payload.Signature`
+
+Parts of a JWT
 - Header: An encoded JSON object containing the type and the hashing algorithm
 used
 - Payload: encoded JSON object containing the data, the real body of the
 token
 - Signature: an encrypted hash of the header and payload, using a secret that
 only the originating server knows
+
+Some good sources of info:
 - https://medium.com/swlh/a-practical-guide-for-jwt-authentication-using-nodejs-and-express-d48369e7e6d4
 - https://hptechblogs.com/using-json-web-token-for-authentication/

@@ -1,5 +1,5 @@
 # Loc8rPublic
-Angular Front end for our application
+Angular Front end for the application
 
 ## Angular Architecture
 
