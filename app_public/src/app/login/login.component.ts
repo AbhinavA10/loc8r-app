@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
   public onLoginSubmit(): void {
     this.formError = '';
     if (
-      !this.credentials.email || //TODO: validate that it is actually an email
+      !this.credentials.email ||
       !this.credentials.password
     ) {
       this.formError = 'All fields are required, please try again';
@@ -56,6 +56,11 @@ export class LoginComponent implements OnInit {
         console.log(this.historyService.getLastNonLoginUrl());
         this.router.navigateByUrl(this.historyService.getLastNonLoginUrl());
       })
-      .catch((message) => this.formError = message);
+      .catch(
+        (message) => {
+          console.log('message');
+          console.log(message)
+          this.formError = message
+        });
   }
 }

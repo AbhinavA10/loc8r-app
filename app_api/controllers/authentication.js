@@ -14,6 +14,7 @@ function register(req, res) {
             .status(400)
             .json({ "message": "All fields required" });
     }
+    
     const user = new User(); // create a new model instance
     user.name = req.body.name;
     user.email = req.body.email;

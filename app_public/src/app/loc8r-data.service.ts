@@ -69,6 +69,9 @@ export class Loc8rDataService {
    */
   private handleError(error: any): Promise<any> {
     console.error('Something has gone wrong', error);
+    if (error.error.message) {
+      return Promise.reject(error.error.message);
+    }
     return Promise.reject(error.message || error);
   }
 
