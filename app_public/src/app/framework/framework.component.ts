@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service'; // needed so we can login and logout from the base page
+import { HistoryService } from '../history.service';
 import { User } from '../user';
 
 @Component({
@@ -9,7 +10,8 @@ import { User } from '../user';
 })
 export class FrameworkComponent implements OnInit {
 
-  constructor(private authenticationService: AuthenticationService) // inject imported service
+  constructor(private authenticationService: AuthenticationService,
+    private historyService: HistoryService) // inject imported service
   { }
 
   ngOnInit() {
