@@ -43,7 +43,10 @@ export class RegisterComponent implements OnInit {
       !this.credentials.password
     ) {
       this.formError = 'All fields are required, please try again';
-    } else {
+    } else if (!this.credentials.email.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
+      this.formError = 'Please enter a valid email';
+    }
+    else {
       this.doRegister();
     }
   }

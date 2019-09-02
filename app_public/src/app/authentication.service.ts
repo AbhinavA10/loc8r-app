@@ -43,7 +43,6 @@ export class AuthenticationService {
   public register(user: User): Promise<any> {
     return this.loc8rDataService.register(user)
       .then((authResp: AuthResponse) => this.saveToken(authResp.token)); // save JWT
-    //TODO: what happens if user already exists?
   }
 
   /**

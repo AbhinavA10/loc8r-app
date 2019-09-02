@@ -80,7 +80,6 @@ function doAddReview(req, res, location, author) {
     }
 };
 
-//TODO: move to a utils file
 /**
  * Wrapper to update the average rating of a location document
  * @param {mongoose.Schema.Types.ObjectId} locationId 

@@ -8,13 +8,26 @@ const User = mongoose.model('User');
  * @param {*} res 
  * @returns a JWT if successful
  */
-function register(req, res) {
+async function register(req, res) {
     if (!req.body.name || !req.body.email || !req.body.password) { // validate required fields have been sent
         return res
             .status(400)
             .json({ "message": "All fields required" });
     }
-    
+    let result;
+    try {
+        result = await User.findOne({ email: req.body.email })
+    }
+    catch (err) {
+        res
+            .status(500)
+            .json(err);
+    }
+    if (result) { // there exists a user in the db, with the provided email
+        return res
+            .status(400)
+            .json({ message: "Email has already been used" });
+    }
     const user = new User(); // create a new model instance
     user.name = req.body.name;
     user.email = req.body.email;
