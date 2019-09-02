@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
+import { HistoryService } from '../history.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit {
   };
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private historyService: HistoryService
   ) { }
   ngOnInit() {
   }
@@ -50,7 +52,9 @@ export class LoginComponent implements OnInit {
    */
   private doLogin(): void {
     this.authenticationService.login(this.credentials) // we can still send the credentials object as a User type
-      .then(() => this.router.navigateByUrl('/'))
+      .then(() => {
+        this.router.navigateByUrl(this.historyService.getLastNonLoginUrl());
+      })
       .catch((message) => this.formError = message);
   }
 }

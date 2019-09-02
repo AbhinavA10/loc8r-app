@@ -35,6 +35,7 @@ Angular Front end SPA
 - geolocation service uses native HTML5 geolocation function to get lat/lng of user
 - uses Angular's router to navigate between pages
 - JWT is saved in `localStorage` so it is saved across page reloads
+- A custom service (`history`) is used to keep track of visited pages. This way, user can return to a page after login
 
 ## .Env variables needed
 - `googleAPIKey` in `location-details.component.ts` in `app_public/`
