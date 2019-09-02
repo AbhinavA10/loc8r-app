@@ -3,7 +3,7 @@
     <div class="col-12 col-md-8">
         <p class="lead">Not a member? Please <a routerLink="/register">register</a> first
         </p>
-        <form (ngSubmit)="onLoginSubmit(evt)">
+        <form (ngSubmit)="onLoginSubmit()">
             <div role="alert" *ngIf="formError" class="alert alert-danger">
                 {{ formError }}
             </div>
