@@ -5,6 +5,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Location, Review } from '../location';
 import { Loc8rDataService } from '../loc8r-data.service'; // for POST api call on a new review
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-location-details',
@@ -24,7 +25,8 @@ export class LocationDetailsComponent implements OnInit {
     reviewText: ''
   };
 
-  constructor(private loc8rDataService: Loc8rDataService) { }
+  constructor(private loc8rDataService: Loc8rDataService,
+    private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
   }
@@ -53,6 +55,7 @@ export class LocationDetailsComponent implements OnInit {
    */
   public onReviewSubmit(): void {
     this.formError = '';
+    this.newReview.author = this.getUsername();
     if (this.formIsValid()) {
       this.loc8rDataService.addReviewByLocationId(this.location._id, this.newReview)
         .then((review: Review) => {
@@ -65,6 +68,21 @@ export class LocationDetailsComponent implements OnInit {
     } else {
       this.formError = 'All fields required, please try again';
     }
+  }
+
+  /**
+   * Wrapper for determining if user is logged in
+   */
+  public isLoggedIn(): boolean {
+    return this.authenticationService.isLoggedIn();
+  }
+
+  /**
+   * Returns user's name
+   */
+  public getUsername(): string {
+    const { name } = this.authenticationService.getCurrentUser();
+    return name ? name : 'Guest';
   }
 
 }
