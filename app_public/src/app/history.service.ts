@@ -5,6 +5,7 @@
 
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+// NavigationEnd events is an event that is triggered once the redirects etc. are complete
 import { filter } from 'rxjs/operators';
 
 @Injectable({

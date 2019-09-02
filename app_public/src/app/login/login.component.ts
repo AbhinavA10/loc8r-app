@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
   private doLogin(): void {
     this.authenticationService.login(this.credentials) // we can still send the credentials object as a User type
       .then(() => {
+        console.log(this.historyService.getLastNonLoginUrl());
         this.router.navigateByUrl(this.historyService.getLastNonLoginUrl());
       })
       .catch((message) => this.formError = message);
