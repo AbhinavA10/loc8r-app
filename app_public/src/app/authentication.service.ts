@@ -34,6 +34,7 @@ export class AuthenticationService {
   public login(user: User): Promise<any> {
     return this.loc8rDataService.login(user)
       .then((authResp: AuthResponse) => this.saveToken(authResp.token)); // save JWT
+      //TODO: what if credentials entered are incorrect?
   }
 
   /**
