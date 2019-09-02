@@ -1,14 +1,15 @@
 /**
- *  Service to interact with API
+ * Service to interact with API
  * Services work in the background
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'; //inject http service into this service so we can make requests to api
 import { Location, Review } from './location';// location class,
 import { environment } from '../environments/environment';
 import { User } from './user';
 import { AuthResponse } from './authresponse';
+import { BROWSER_STORAGE } from './storage';
 
 @Injectable({ // Decorator that marks a class as available to be provided and injected as a dependency.
   providedIn: 'root'
@@ -17,7 +18,9 @@ import { AuthResponse } from './authresponse';
 export class Loc8rDataService {
   private apiBaseUrl = environment.apiBaseUrl;
 
-  constructor(private http: HttpClient) { } //Angular manages dependancy injection using constructor
+  constructor(private http: HttpClient,
+    @Inject(BROWSER_STORAGE) private storage: Storage // need to import localStorage so we can retreive token for api calls
+  ) { } //Angular manages dependancy injection using constructor
 
   /**
    * Make GET Request to API for nearby locations
@@ -50,8 +53,11 @@ export class Loc8rDataService {
    */
   public addReviewByLocationId(locationId: string, formData: any): Promise<Review> {
     const url: string = `${this.apiBaseUrl}/locations/${locationId}/reviews`;
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': `Bearer ${this.storage.getItem('loc8r-token')}` }) // add jwt to header
+    }
     return this.http
-      .post(url, formData)
+      .post(url, formData, httpOptions)
       .toPromise()
       .then(response => response as Review)
       .catch(this.handleError);
